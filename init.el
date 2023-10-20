@@ -48,6 +48,7 @@
 ;; Org mode
 (add-hook 'org-mode-hook 'org-indent-mode)
 (setq org-hide-emphasis-markers t)
+(setq org-startup-folded 'content)
 (require 'org-bullets) ;;Org-bullets
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (setq org-startup-truncated nil)
