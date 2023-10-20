@@ -60,6 +60,8 @@
 	  (ac-config-default)
 	  (global-auto-complete-mode t)))
 
+;; Eglot-LSP
+(add-hook 'c++-mode-hook 'eglot-ensure)
 
 
 (custom-set-variables
