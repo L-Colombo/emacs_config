@@ -8,6 +8,7 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (electric-pair-mode 1)
+(windmove-default-keybindings)
 
 
 ;; meta is now command on mac
