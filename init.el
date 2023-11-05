@@ -80,6 +80,7 @@
 (add-hook 'python-mode-hook 'add-yasnippet-ac-sources)
 (add-hook 'javascript-mode-hook 'add-yasnippet-ac-sources)
 (add-hook 'c++-mode-hook 'add-yasnippet-ac-sources)
+(add-hook 'php-mode-hook 'add-yasnippet-ac-sources)
 
 ;;Vertico
 (use-package vertico
