@@ -7,6 +7,7 @@
 (set-face-attribute 'default nil :height 190)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+(setq ring-bell-function 'ignore)
 (electric-pair-mode 1)
 (windmove-default-keybindings)
 
