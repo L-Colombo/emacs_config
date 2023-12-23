@@ -96,8 +96,13 @@
 (require 'dashboard)
 (dashboard-setup-startup-hook)
 (setq dashboard-items '((recents . 5)
-;;			(projects . 5)
+			(projects . 5)
 			))
+
+;;Projectile
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
