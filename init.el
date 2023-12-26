@@ -63,8 +63,6 @@
 (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 
 ;; Org mode
-(unless (package-installed-p 'org-mode)
-  (package-install 'org-mode))
 (unless (package-install 'org-bullets)
   (package-install 'org-bullets))
 
