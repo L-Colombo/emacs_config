@@ -23,6 +23,7 @@
 ;; Installing MELPA
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
 
 ;; Colorschemes 
 (unless (package-installed-p 'naga-theme) ;;ensures current theme is installed before loading it
