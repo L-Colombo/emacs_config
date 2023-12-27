@@ -126,8 +126,8 @@
 
 (require 'dashboard)
 (dashboard-setup-startup-hook)
-(setq dashboard-items '((recents . 5)
-			(projects . 5)))
+(setq dashboard-items '((recents . 7)
+			(projects . 7)))
 
 ;;Projectile
 (unless (package-installed-p 'projectile)
