@@ -32,16 +32,16 @@
 (load-theme 'naga t)
 
 ;; Auctex
-(require 'package)
-
 (unless (package-installed-p 'pdf-tools) ;;ensure pdf-tools is installed and configured
   (package-install 'pdf-tools))
+
 (use-package pdf-tools
   :config
   (pdf-tools-install))
 
 (unless (package-installed-p 'auctex) ;;AuCTeX setup
   (package-install 'auctex))
+
 (require 'latex)
 (setq TeX-parse-self t)
 (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
@@ -61,6 +61,9 @@
 (setq reftex-plug-into-AUCTeX t)
 
 ;;Ido-mode
+(unless (package-installed-p 'ido-vertical-mode)
+  (package-install 'ido-vertical-mode))
+
 (ido-mode 1)
 (ido-vertical-mode 1)
 (setq ido-vertical-define-keys 'C-n-and-C-p-only)
