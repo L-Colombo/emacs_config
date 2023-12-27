@@ -25,6 +25,14 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
+;;seutp use-package
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+;;install Magit
+(unless (package-installed-p 'magit)
+  (package-install 'magit))
+
 ;; Colorschemes 
 (unless (package-installed-p 'naga-theme) ;;ensures current theme is installed before loading it
   (package-install 'naga-theme))
