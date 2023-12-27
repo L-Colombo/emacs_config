@@ -204,6 +204,19 @@
 (advice-add 'move-text-up :after 'indent-region-advice)
 (advice-add 'move-text-down :after 'indent-region-advice)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;MODE-LINE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(unless (package-installed-p 'doom-modeline)
+  (package-install 'doom-modeline))
+
+(unless (package-installed-p 'nerd-icons)
+  (package-install 'nerd-icons))
+
+(require 'doom-modeline)
+(doom-modeline-mode 1)
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
