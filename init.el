@@ -46,6 +46,8 @@
 
 (unless (package-installed-p 'naga-theme)
   (package-install 'naga-theme))
+(unless (package-installed-p 'gruber-darker-theme)
+  (package-install 'gruber-darker-theme))
 
 (load-theme 'naga t)
 
