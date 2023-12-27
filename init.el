@@ -8,7 +8,7 @@
 (tool-bar-mode 1)
 (global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
-(set-face-attribute 'default nil :height 190)
+(set-frame-font "Iosevka Nerd Font 19" nil t)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq ring-bell-function 'ignore)
