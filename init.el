@@ -1,3 +1,7 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;DEFAULT SETTINGS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (auto-save-mode -1)
 (setq inhibit-startup-screen 't)
 (setq-default word-wrap t)
@@ -14,40 +18,53 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-;; CMD af meta key on MacOS
 (setq mac-option-modifier nil
       mac-command-modifier 'meta
       x-select-enable-clipboard t)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;PACKAGES AND REPO INITIALIZATION
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Installing MELPA
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
 
-;;seutp use-package
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
-;;install Magit
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;MAGIT
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (unless (package-installed-p 'magit)
   (package-install 'magit))
 
-;; Colorschemes 
-(unless (package-installed-p 'naga-theme) ;;ensures current theme is installed before loading it
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;COLORSCHEMES
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(unless (package-installed-p 'naga-theme)
   (package-install 'naga-theme))
 
 (load-theme 'naga t)
 
-;; Auctex
-(unless (package-installed-p 'pdf-tools) ;;ensure pdf-tools is installed and configured
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;PDF-TOOLS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(unless (package-installed-p 'pdf-tools)
   (package-install 'pdf-tools))
 
 (use-package pdf-tools
   :config
   (pdf-tools-install))
 
-(unless (package-installed-p 'auctex) ;;AuCTeX setup
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;AUCTEX
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(unless (package-installed-p 'auctex)
   (package-install 'auctex))
 
 (require 'latex)
@@ -68,15 +85,28 @@
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
 (setq reftex-plug-into-AUCTeX t)
 
-;;Ido-mode
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;IDO & VERTICO
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (unless (package-installed-p 'ido-vertical-mode)
   (package-install 'ido-vertical-mode))
+
+(unless (package-installed-p 'vertico)
+  (package-install 'vertico))
 
 (ido-mode 1)
 (ido-vertical-mode 1)
 (setq ido-vertical-define-keys 'C-n-and-C-p-only)
 
-;; Org mode
+(use-package vertico
+  :init
+  (vertico-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;ORG-MODE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (unless (package-install 'org-bullets)
   (package-install 'org-bullets))
 
@@ -87,7 +117,10 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (setq org-startup-truncated nil)
 
-;; auto-completetion
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;AUTO-COMPLETE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (unless (package-installed-p 'auto-complete)
   (package-install 'auto-complete))
 (use-package auto-complete
@@ -96,20 +129,26 @@
 	  (ac-config-default)
 	  (global-auto-complete-mode t)))
 
-;; Eglot-LSP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;EGLOT
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (unless (package-installed-p 'eglot)
   (package-install 'eglot))
 
-(setq eglot-managed-mode-hook (list (lambda () (eldoc-mode -1)))) ;; disable eldoc info by default
+(setq eglot-managed-mode-hook (list (lambda () (eldoc-mode -1))))
 (add-hook 'c-mode-hook 'eglot-ensure)
 (add-hook 'c++-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
 
 (with-eval-after-load "eglot"
-  (add-to-list 'eglot-server-programs '(php-mode "~/.nvm/versions/node/v18.16.1/bin/intelephense" "--stdio")))
+  (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio")))
 (add-hook 'php-mode-hook 'eglot-ensure)
 
-;; Snippets
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;YASNIPPET & SNIPPETS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (unless (package-installed-p 'yasnippet)
   (package-install 'yasnippet))
 (unless (package-installed-p 'yasnippet-snippets)
@@ -124,15 +163,10 @@
 (add-hook 'c++-mode-hook 'add-yasnippet-ac-sources)
 (add-hook 'php-mode-hook 'add-yasnippet-ac-sources)
 
-;;Vertico
-(unless (package-installed-p 'vertico)
-  (package-install 'vertico))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;DASHBOARD
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package vertico
-  :init
-  (vertico-mode))
-
-;;Dashboard
 (unless (package-installed-p 'dashboard)
   (package-install 'dashboard))
 
@@ -141,14 +175,20 @@
 (setq dashboard-items '((recents . 7)
 			(projects . 7)))
 
-;;Projectile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;PROJECTILE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (unless (package-installed-p 'projectile)
   (package-install 'projectile))
 
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
-;;Move Text
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;MOVE-TEXT
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (unless (package-installed-p 'move-text)
   (package-install 'move-text))
 
@@ -162,9 +202,18 @@
 (advice-add 'move-text-up :after 'indent-region-advice)
 (advice-add 'move-text-down :after 'indent-region-advice)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;LANGUAGE-SPECIFIC MODES
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;LANGUAGE-SPECIFIC MODES;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;PHP
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (unless (package-installed-p 'php-mode)
   (package-install 'php-mode))
