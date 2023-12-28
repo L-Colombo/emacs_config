@@ -8,7 +8,7 @@
 (tool-bar-mode 1)
 (global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
-(set-frame-font "Iosevka Nerd Font 19" nil t)
+(set-frame-font "Iosevka Nerd Font Propo 20" nil t)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq ring-bell-function 'ignore)
@@ -49,7 +49,7 @@
 (unless (package-installed-p 'gruber-darker-theme)
   (package-install 'gruber-darker-theme))
 
-(load-theme 'naga t)
+(load-theme 'gruber-darker t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;PDF-TOOLS
