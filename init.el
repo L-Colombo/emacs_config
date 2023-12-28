@@ -109,7 +109,7 @@
 ;;ORG-MODE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(unless (package-install 'org-bullets)
+(unless (package-installed-p 'org-bullets)
   (package-install 'org-bullets))
 
 (add-hook 'org-mode-hook 'org-indent-mode)
