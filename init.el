@@ -232,3 +232,10 @@
 
 (unless (package-installed-p 'php-mode)
   (package-install 'php-mode))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;MARKDOWN
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(unless (package-installed-p 'markdown-mode)
+  (package-install 'markdown-mode))
