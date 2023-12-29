@@ -76,6 +76,8 @@
   :config
   (pdf-tools-install))
 
+(setq pdf-view-incompatible-modes '())
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;AUCTEX
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
