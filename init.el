@@ -246,10 +246,10 @@
 
 (require 'neotree)
 (global-set-key (kbd "C-c e") 'neotree-toggle)
+(setq neo-smart-open t)
 
 (when (display-graphic-p)
   (require 'all-the-icons))
-
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
