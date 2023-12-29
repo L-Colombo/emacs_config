@@ -231,7 +231,18 @@
 (require 'doom-modeline)
 (doom-modeline-mode 1)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;NEO-TREE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(unless (package-installed-p 'neotree)
+  (package-install 'neotree))
+
+(unless (package-installed-p 'all-the-icons)
+  (package-install 'all-the-icons))
+
+(require 'neotree)
+(global-set-key (kbd "C-c e") 'neotree-toggle)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
