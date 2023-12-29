@@ -240,8 +240,17 @@
 (unless (package-installed-p 'neotree)
   (package-install 'neotree))
 
+(unless (package-installed-p 'all-the-icons)
+  (package-install 'all-the-icons))
+;;to work properly, run `M-x all-the-icons-install-fonts RET`
+
 (require 'neotree)
 (global-set-key (kbd "C-c e") 'neotree-toggle)
+
+(when (display-graphic-p)
+  (require 'all-the-icons))
+
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
