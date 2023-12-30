@@ -135,6 +135,11 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (setq org-startup-truncated nil)
 
+;;setup agenda
+(global-set-key (kbd "C-c a") #'org-agenda)
+
+(setq org-agenda-files '("~/.orgmode_files/Agenda.org"))
+(setq org-agenda-span 'month)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;AUTO-COMPLETE
@@ -192,7 +197,8 @@
 (require 'dashboard)
 (dashboard-setup-startup-hook)
 
-(setq dashboard-items '((recents . 7)
+(setq dashboard-items '((bookmarks . 7)
+			(recents . 7)
 			(projects . 7)))
 
 (setq dashboard-icon-type 'all-the-icons)
