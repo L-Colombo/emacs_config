@@ -13,7 +13,13 @@
 (setq auto-save-default nil)
 (setq ring-bell-function 'ignore)
 (electric-pair-mode 1)
-(windmove-default-keybindings)
+
+;;move across window with
+(windmove-mode -1)
+(global-set-key (kbd "C-c <right>") #'windmove-right)
+(global-set-key (kbd "C-c <left>") #'windmove-left)
+(global-set-key (kbd "C-c <up>") #'windmove-up)
+(global-set-key (kbd "C-c <down>") #'windmove-down)
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
