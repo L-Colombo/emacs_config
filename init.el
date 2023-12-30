@@ -135,6 +135,7 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (setq org-startup-truncated nil)
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;AUTO-COMPLETE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -190,8 +191,13 @@
 
 (require 'dashboard)
 (dashboard-setup-startup-hook)
+
 (setq dashboard-items '((recents . 7)
 			(projects . 7)))
+
+(setq dashboard-icon-type 'all-the-icons)
+(setq dashboard-set-heading-icons nil)
+(setq dashboard-set-file-icons t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;PROJECTILE
