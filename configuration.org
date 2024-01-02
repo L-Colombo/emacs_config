@@ -69,7 +69,6 @@ Then a theme can be set as default:
 (load-theme 'gruber-darker)
 #+end_src
 
-
 * Packages and Modes
 
 ** Helpful
