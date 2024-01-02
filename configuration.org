@@ -1,0 +1,441 @@
+#+title: Emacs configuration
+#+author: Lorenzo Colombo
+
+
+* General section 
+
+** Generic settings
+
+*** Defaults
+
+#+begin_src emacs-lisp
+(auto-save-mode -1)
+(electric-pair-mode 1)
+(global-display-line-numbers-mode 1)
+
+(setq display-line-numbers-type 'relative)
+(setq inhibit-startup-screen 't)
+(setq-default word-wrap t)
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+(setq ring-bell-function 'ignore)
+
+(set-frame-font "Iosevka Nerd Font Propo 20" nil t)
+#+end_src
+
+*** Window movements
+This bindings are chosen in order to avoid potential conflicts with other modes or packages that require ~S-<arrows>~ to do stuff.
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c <right>") #'windmove-right)
+(global-set-key (kbd "C-c <left>") #'windmove-left)
+(global-set-key (kbd "C-c <up>") #'windmove-up)
+(global-set-key (kbd "C-c <down>") #'windmove-down)
+#+end_src
+
+*** Set meta key to CMD on MacOs
+
+#+begin_src emacs-lisp
+(setq mac-option-modifier nil
+      mac-command-modifier 'meta
+      x-select-enable-clipboard t)
+#+end_src
+
+*** Colorschemes
+
+The following block is to ensure that the themes usually set as default are installed before being loaded. This step is necessary only for the themes that may be set as default theme on startup to avoid errors.
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'naga-theme)
+  (package-install 'naga-theme))
+(unless (package-installed-p 'gruber-darker-theme)
+  (package-install 'gruber-darker-theme))
+#+end_src
+
+Then a theme can be set as default:
+
+#+begin_src emacs-lisp
+(load-theme 'gruber-darker)
+#+end_src
+
+** Packages and repositories setup
+
+#+begin_src emacs-lisp
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+#+end_src
+
+* Packages and Modes
+
+** Helpful
+
+The ~helpful~ package provides a nicer interface for the standard help buffers.
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'helpful)
+  (package-install 'helpful))
+#+end_src
+
+To do this more conveniently, it needs to override the standard help keybindings
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-h f") #'helpful-callable)
+(global-set-key (kbd "C-h v") #'helpful-variable)
+(global-set-key (kbd "C-h k") #'helpful-key)
+(global-set-key (kbd "C-h x") #'helpful-command)
+(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+#+end_src
+
+** GIT interaction
+
+First of all, we need to ensure ~magit~ as our Git client on Emacs;
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'magit)
+  (package-install 'magit))
+#+end_src
+
+Then, we install the ~git-gutter~ for seamless Git interaction and enable it globally;
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'git-gutter)
+  (package-install 'git-gutter))
+
+(global-git-gutter-mode 1)
+(custom-set-variables '(git-gutter:update-interval 1))
+#+end_src
+
+Finally, we set the folowing key-bindings:
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c p") 'git-gutter:previous-hunk)
+(global-set-key (kbd "C-c n") 'git-gutter:next-hunk)
+(global-set-key (kbd "C-c v s") 'git-gutter:stage-hunk)
+(global-set-key (kbd "C-c v r") 'git-gutter:revert-hunk)
+#+end_src
+
+** Expand-Region
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'expand-region)
+  (package-install 'expand-region))
+
+(require 'expand-region)
+(global-set-key (kbd "C-.") 'er/expand-region)
+#+end_src
+
+** Ace-Jump
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'ace-jump-mode)
+  (package-install 'ace-jump-mode))
+
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+#+end_src
+
+** Pdf-Tools
+This package is important as it is used with ~AUCTeX~ as pdf viewer.
+
+First, we install and setup:
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'pdf-tools)
+  (package-install 'pdf-tools))
+
+(use-package pdf-tools
+  :config
+  (pdf-tools-install))
+#+end_src
+
+Then we empty the list of incompatible modes to avoid errors when displaying pdfs:
+
+#+begin_src emacs-lisp
+(setq pdf-view-incompatible-modes '())
+#+end_src
+
+** LaTeX
+
+The basic package for working with LaTeX on Emacs is the ~AUCTeX~ package.
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'auctex)
+  (package-install 'auctex))
+
+(require 'latex)
+(setq TeX-parse-self t)
+(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+      TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+      TeX-source-correlate-start-server t)
+(add-hook 'TeX-after-compilation-finished-functions
+          #'TeX-revert-document-buffer)
+(with-eval-after-load 'tex
+  (setq TeX-source-correlate-method '((pdf . synctex)))
+  (TeX-source-correlate-mode))
+
+(eval-after-load "tex"
+  '(define-key TeX-source-correlate-map [C-down-mouse-1]
+	       #'TeX-view-mouse))
+#+end_src
+
+Reftex provides nice automplete features to LaTeX, especially for bibliography and indexes.
+
+#+begin_src emacs-lisp
+(require 'reftex)
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
+#+end_src
+
+** IDO & Vertico
+
+We only need to install ~vertico~ and ~ido-vertical-mode~, as ~ido~ is a built-in package.
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'ido-vertical-mode)
+  (package-install 'ido-vertical-mode))
+(unless (package-installed-p 'vertico)
+  (package-install 'vertico))
+#+end_src
+
+Then, we configure and activate ~ido-mode~ and ~vertico-mode~.
+
+#+begin_src emacs-lisp
+(ido-mode 1)
+(vertico-mode 1)
+(ido-vertical-mode 1)
+(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+#+end_src
+
+** Org-mode and related
+
+*** Org-Mode itslef
+~org-mode~ is built-in, so it needs only to be configured.
+
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'org-indent-mode)
+(setq org-hide-emphasis-markers t)
+(setq org-startup-folded 'content)
+(setq org-startup-truncated nil)
+#+end_src
+
+*** Bullets
+~org-bullets~ needs to be installed and attached via hook to ~org-mode~.
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'org-bullets)
+  (package-install 'org-bullets))
+
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+
+*** Org-agenda & Org-capture
+
+Keybindings for rapid access:
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+#+end_src
+
+**** Org-agenda:
+
+#+begin_src emacs-lisp
+(setq org-agenda-files '("~/.notes/agenda.org"))
+(setq org-agenda-span 'month)
+#+end_src
+
+** Auto-complete
+#+begin_src emacs-lisp
+(unless (package-installed-p 'auto-complete)
+  (package-install 'auto-complete))
+
+(use-package auto-complete
+  :ensure t
+  :init (progn
+	  (ac-config-default)
+	  (global-auto-complete-mode t)))
+#+end_src
+
+** Eglot
+
+Installation should not be needed, as Eglot is usually built-in. But, to be extra sure:
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'eglot)
+  (package-install 'eglot))
+#+end_src
+
+Then, we disable annoying Eldoc messages by default:
+
+#+begin_src emacs-lisp
+(setq eglot-managed-mode-hook (list (lambda () (eldoc-mode -1))))
+#+end_src
+
+Finally, we add some language-specific hooks:
+
+#+begin_src emacs-lisp
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook 'php-mode-hook 'eglot-ensure)
+(add-hook 'js-mode-hook 'eglot-ensure)
+(with-eval-after-load "eglot"
+  (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio")))
+#+end_src
+
+** Yasnippet
+
+We need to install both ~yasnippet~ and a snippets' collection:
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'yasnippet)
+  (package-install 'yasnippet))
+(unless (package-installed-p 'yasnippet-snippets)
+  (package-install 'yasnippet-snippets))
+#+end_src
+
+Then we enable ~yasnippet~ globally and attach hooks.
+
+#+begin_src emacs-lisp
+(yas-global-mode 1)
+(defun add-yasnippet-ac-sources ()
+  (add-to-list 'ac-sources 'ac-source-yasnippet))
+
+(add-hook 'python-mode-hook 'add-yasnippet-ac-sources)
+(add-hook 'js-mode-hook 'add-yasnippet-ac-sources)
+(add-hook 'c++-mode-hook 'add-yasnippet-ac-sources)
+(add-hook 'php-mode-hook 'add-yasnippet-ac-sources)
+#+end_src
+
+** Dashboard
+
+We first need to install the ~dashboard~ package and the ~all-the-icons~ package to add the icons. Remember that ~all-the-icons~ needs to initialize with the comand ~M-x all-the-icons-install-fonts RET~.
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'dashboard)
+  (package-install 'dashboard))
+(unless (package-installed-p 'all-the-icons)
+  (package-install 'all-the-icons))
+#+end_src
+
+#+begin_src emacs-lisp
+(require 'dashboard)
+(dashboard-setup-startup-hook)
+
+(setq dashboard-items '((bookmarks . 7)
+		            (recents . 7)
+			    (projects . 7)))
+
+(setq dashboard-icon-type 'all-the-icons)
+(setq dashboard-set-heading-icons nil)
+(setq dashboard-set-file-icons t)
+#+end_src
+
+** Projectile
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'projectile)
+  (package-install 'projectile))
+
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+#+end_src
+
+** Move-text
+
+Installation and configuration to use default key-bindings:
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'move-text)
+  (package-install 'move-text))
+
+(move-text-default-bindings)
+#+end_src
+
+And this is a function to auto indent when moving a line:
+
+#+begin_src emacs-lisp
+(defun indent-region-advice (&rest ignored)
+  (let ((deactivate deactivate-mark))
+    (if (region-active-p)
+        (indent-region (region-beginning) (region-end))
+      (indent-region (line-beginning-position) (line-end-position)))
+    (setq deactivate-mark deactivate)))
+(advice-add 'move-text-up :after 'indent-region-advice)
+(advice-add 'move-text-down :after 'indent-region-advice)
+#+end_src
+
+** Mode line (~doom-modeline~)
+
+Install ~doom-modeline~ package and the ~nerd-icons~ package; in order for this to run properly, it is required to run the command ~M-x nerd-icons-install-fonts RET~.
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'doom-modeline)
+  (package-install 'doom-modeline))
+(unless (package-installed-p 'nerd-icons)
+  (package-install 'nerd-icons))
+#+end_src
+
+Enabling the ~doom-modeline~:
+
+#+begin_src emacs-lisp
+(require 'doom-modeline)
+(doom-modeline-mode 1)
+#+end_src
+
+** Tree file explorer (neotree)
+
+Install the ~neotree~ package and the ~all-the-icons~ package:
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'neotree)
+  (package-install 'neotree))
+(unless (package-installed-p 'all-the-icons)
+  (package-install 'all-the-icons))
+#+end_src
+
+Then we add configuration and keybinding to toggle the explorer:
+
+#+begin_src emacs-lisp
+(require 'neotree)
+(global-set-key (kbd "C-c e") 'neotree-toggle)
+(setq neo-smart-open t)
+(when (display-graphic-p)
+  (require 'all-the-icons))
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+#+end_src
+
+* Language specific modes 
+
+** Markdown
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'markdown-mode)
+  (package-install 'markdown-mode))
+#+end_src
+
+** Web Mode
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'web-mode)
+  (package-install 'web-mode))
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+
+(setq web-mode-markup-indent-offset 4)
+(setq web-mode-css-indent-offset 4)
+(setq web-mode-code-indent-offset 4)
+#+end_src
