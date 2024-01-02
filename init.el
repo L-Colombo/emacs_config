@@ -168,18 +168,21 @@
 ;;ORG-MODE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(unless (package-installed-p 'org-bullets)
-  (package-install 'org-bullets))
-
 (add-hook 'org-mode-hook 'org-indent-mode)
 (setq org-hide-emphasis-markers t)
 (setq org-startup-folded 'content)
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 (setq org-startup-truncated nil)
 
-;;setup agenda
+;;org-bullets
+(unless (package-installed-p 'org-bullets)
+  (package-install 'org-bullets))
+
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+;;setup agenda & capture
 (global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
 
 (setq org-agenda-files '("~/.orgmode_files/Agenda.org"))
 (setq org-agenda-span 'month)
@@ -207,10 +210,11 @@
 (add-hook 'c-mode-hook 'eglot-ensure)
 (add-hook 'c++-mode-hook 'eglot-ensure)
 (add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook 'php-mode-hook 'eglot-ensure)
+(add-hook 'js-mode-hook 'eglot-ensure)
 
 (with-eval-after-load "eglot"
   (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio")))
-(add-hook 'php-mode-hook 'eglot-ensure)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;YASNIPPET & SNIPPETS
@@ -226,7 +230,7 @@
   (add-to-list 'ac-sources 'ac-source-yasnippet))
 
 (add-hook 'python-mode-hook 'add-yasnippet-ac-sources)
-(add-hook 'javascript-mode-hook 'add-yasnippet-ac-sources)
+(add-hook 'js-mode-hook 'add-yasnippet-ac-sources)
 (add-hook 'c++-mode-hook 'add-yasnippet-ac-sources)
 (add-hook 'php-mode-hook 'add-yasnippet-ac-sources)
 
