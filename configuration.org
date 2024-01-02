@@ -220,6 +220,7 @@ Then, we configure and activate ~ido-mode~ and ~vertico-mode~.
 (setq org-hide-emphasis-markers t)
 (setq org-startup-folded 'content)
 (setq org-startup-truncated nil)
+(setq org-directory "~/.notes")
 #+end_src
 
 *** Bullets
@@ -247,6 +248,12 @@ Keybindings for rapid access:
 #+begin_src emacs-lisp
 (setq org-agenda-files '("~/.notes/agenda.org"))
 (setq org-agenda-span 'month)
+#+end_src
+
+**** Org-capture:
+
+#+begin_src emacs-lisp
+(setq org-default-notes-file (concat org-directory "/notes.org"))
 #+end_src
 
 ** Auto-complete
