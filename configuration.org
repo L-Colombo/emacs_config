@@ -4,6 +4,17 @@
 
 * General section 
 
+** Packages and repositories setup
+
+#+begin_src emacs-lisp
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+#+end_src
+
 ** Generic settings
 
 *** Defaults
@@ -58,16 +69,6 @@ Then a theme can be set as default:
 (load-theme 'gruber-darker)
 #+end_src
 
-** Packages and repositories setup
-
-#+begin_src emacs-lisp
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
-
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-#+end_src
 
 * Packages and Modes
 
