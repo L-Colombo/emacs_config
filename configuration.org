@@ -256,16 +256,11 @@ Keybindings for rapid access:
 (setq org-default-notes-file (concat org-directory "/notes.org"))
 #+end_src
 
-** Auto-complete
+** Company-mode
 #+begin_src emacs-lisp
-(unless (package-installed-p 'auto-complete)
-  (package-install 'auto-complete))
-
-(use-package auto-complete
-  :ensure t
-  :init (progn
-	  (ac-config-default)
-	  (global-auto-complete-mode t)))
+(unless (package-installed-p 'company)
+  (package-install 'company))
+(global-company-mode)
 #+end_src
 
 ** Eglot
@@ -318,17 +313,10 @@ We need to install both ~yasnippet~ and a snippets' collection:
   (package-install 'yasnippet-snippets))
 #+end_src
 
-Then we enable ~yasnippet~ globally and attach hooks.
+Then we enable ~yasnippet~ globally.
 
 #+begin_src emacs-lisp
-(yas-global-mode 1)
-(defun add-yasnippet-ac-sources ()
-  (add-to-list 'ac-sources 'ac-source-yasnippet))
-
-(add-hook 'python-mode-hook 'add-yasnippet-ac-sources)
-(add-hook 'js-mode-hook 'add-yasnippet-ac-sources)
-(add-hook 'c++-mode-hook 'add-yasnippet-ac-sources)
-(add-hook 'php-mode-hook 'add-yasnippet-ac-sources)
+  (yas-global-mode 1)
 #+end_src
 
 ** Dashboard
