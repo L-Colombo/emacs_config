@@ -57,16 +57,18 @@ This bindings are chosen in order to avoid potential conflicts with other modes 
 The following block is to ensure that the themes usually set as default are installed before being loaded. This step is necessary only for the themes that may be set as default theme on startup to avoid errors.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'naga-theme)
-  (package-install 'naga-theme))
-(unless (package-installed-p 'gruber-darker-theme)
-  (package-install 'gruber-darker-theme))
+  (unless (package-installed-p 'naga-theme)
+    (package-install 'naga-theme))
+  (unless (package-installed-p 'gruber-darker-theme)
+    (package-install 'gruber-darker-theme))
+  (unless (package-installed-p 'kaolin-themes)
+    (package-install 'kaolin-themes))
 #+end_src
 
 Then a theme can be set as default:
 
 #+begin_src emacs-lisp
-(load-theme 'gruber-darker)
+(load-theme 'kaolin-dark)
 #+end_src
 
 * Packages and Modes
