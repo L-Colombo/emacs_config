@@ -127,7 +127,7 @@ Finally, we set the folowing key-bindings:
   (package-install 'expand-region))
 
 (require 'expand-region)
-(global-set-key (kbd "C-.") 'er/expand-region)
+(global-set-key (kbd "C-ù") 'er/expand-region)
 #+end_src
 
 With ~pending-delete-mode~ enabled, highligted text can be rapidly changed.
