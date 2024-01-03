@@ -128,6 +128,12 @@ Finally, we set the folowing key-bindings:
 (global-set-key (kbd "C-.") 'er/expand-region)
 #+end_src
 
+With ~pending-delete-mode~ enabled, highligted text can be rapidly changed.
+
+#+begin_src emacs-lisp
+(pending-delete-mode t)
+#+end_src
+
 ** Ace-Jump
 
 #+begin_src emacs-lisp
