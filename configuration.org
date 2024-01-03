@@ -313,10 +313,11 @@ We need to install both ~yasnippet~ and a snippets' collection:
   (package-install 'yasnippet-snippets))
 #+end_src
 
-Then we enable ~yasnippet~ globally.
+Then we enable ~yasnippet~ globally and bind it to ~"C-c y"~ to work with ~company-mode~.
 
 #+begin_src emacs-lisp
   (yas-global-mode 1)
+  (global-set-key (kbd "C-c y") 'company-yasnippet)
 #+end_src
 
 ** Dashboard
