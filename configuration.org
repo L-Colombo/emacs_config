@@ -446,3 +446,10 @@ Then we add configuration and keybinding to toggle the explorer:
 (setq web-mode-css-indent-offset 4)
 (setq web-mode-code-indent-offset 4)
 #+end_src
+
+** PHP-Mode
+
+#+begin_src emacs-lisp
+  (unless (package-installed-p 'php-mode)
+    (package-install 'php-mode))
+#+end_src
