@@ -286,13 +286,18 @@ Then, we disable annoying Eldoc messages by default:
 Finally, we add some language-specific hooks:
 
 #+begin_src emacs-lisp
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
-(add-hook 'python-mode-hook 'eglot-ensure)
-(add-hook 'php-mode-hook 'eglot-ensure)
-(add-hook 'js-mode-hook 'eglot-ensure)
-(with-eval-after-load "eglot"
-  (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio")))
+    (add-hook 'c-mode-hook 'eglot-ensure)
+    (add-hook 'c++-mode-hook 'eglot-ensure)
+    (add-hook 'python-mode-hook 'eglot-ensure)
+    (add-hook 'php-mode-hook 'eglot-ensure)
+    (add-hook 'js-mode-hook 'eglot-ensure)
+
+  (when (eq system-type 'darwin)
+    (with-eval-after-load "eglot"
+      (add-to-list 'eglot-server-programs '(php-mode "/Users/lorenzocolombo/.nvm/versions/node/v18.16.1/bin/intelephense" "--stdio"))))
+   (when (eq system-type 'gnu/linux)
+    (with-eval-after-load "eglot"
+      (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio"))))
 #+end_src
 
 ** Yasnippet
