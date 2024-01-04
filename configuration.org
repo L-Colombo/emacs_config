@@ -310,6 +310,12 @@ Finally, we add some language-specific hooks:
        (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio"))))
 #+end_src
 
+Bonus: this snippet enables format-on-save using LSP:
+
+#+begin_src emacs-lisp
+(add-hook 'before-save-hook 'eglot-format)
+#+end_src
+
 ** Yasnippet
 
 We need to install both ~yasnippet~ and a snippets' collection:
