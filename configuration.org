@@ -57,12 +57,12 @@ This bindings are chosen in order to avoid potential conflicts with other modes 
 The following block is to ensure that the themes usually set as default are installed before being loaded. This step is necessary only for the themes that may be set as default theme on startup to avoid errors.
 
 #+begin_src emacs-lisp
-  (unless (package-installed-p 'naga-theme)
-    (package-install 'naga-theme))
-  (unless (package-installed-p 'gruber-darker-theme)
-    (package-install 'gruber-darker-theme))
-  (unless (package-installed-p 'kaolin-themes)
-    (package-install 'kaolin-themes))
+(unless (package-installed-p 'naga-theme)
+  (package-install 'naga-theme))
+(unless (package-installed-p 'gruber-darker-theme)
+  (package-install 'gruber-darker-theme))
+(unless (package-installed-p 'kaolin-themes)
+  (package-install 'kaolin-themes))
 #+end_src
 
 Then a theme can be set as default:
@@ -221,6 +221,7 @@ Then, we configure and activate ~ido-mode~ and ~vertico-mode~.
 ** Org-mode and related
 
 *** Org-Mode itslef
+
 ~org-mode~ is built-in, so it needs only to be configured.
 
 #+begin_src emacs-lisp
@@ -229,6 +230,14 @@ Then, we configure and activate ~ido-mode~ and ~vertico-mode~.
 (setq org-startup-folded 'content)
 (setq org-startup-truncated nil)
 (setq org-directory "~/.notes")
+#+end_src
+
+The following variables disable auto-indenting
+
+#+begin_src emacs-lisp
+(setq org-edit-src-content-indentation 0)
+(setq org-src-tab-acts-natively t)
+(setq org-src-preserve-indentation t)
 #+end_src
 
 *** Bullets
@@ -265,6 +274,7 @@ Keybindings for rapid access:
 #+end_src
 
 ** Company-mode
+
 #+begin_src emacs-lisp
 (unless (package-installed-p 'company)
   (package-install 'company))
@@ -289,25 +299,25 @@ Then, we disable annoying Eldoc messages by default:
 Finally, we add some language-specific hooks:
 
 #+begin_src emacs-lisp
-     (add-hook 'c-mode-hook 'eglot-ensure)
-     (add-hook 'c++-mode-hook 'eglot-ensure)
-     (add-hook 'python-mode-hook 'eglot-ensure)
-     (add-hook 'php-mode-hook 'eglot-ensure)
-     (add-hook 'js-mode-hook 'eglot-ensure)
+(add-hook 'c-mode-hook 'eglot-ensure)
+(add-hook 'c++-mode-hook 'eglot-ensure)
+(add-hook 'python-mode-hook 'eglot-ensure)
+(add-hook 'php-mode-hook 'eglot-ensure)
+(add-hook 'js-mode-hook 'eglot-ensure)
 
-  (when (eq system-type 'darwin)
-     (with-eval-after-load "eglot"
-       (add-to-list 'eglot-server-programs '(js-mode "/Users/lorenzocolombo/.nvm/versions/node/v18.16.1/bin/typescript-language-server" "--stdio"))))
-   (when (eq system-type 'gnu/linux)
-    (with-eval-after-load "eglot"
-      (add-to-list 'eglot-server-programs '(js-mode "/usr/local/bin/typescript-language-server" "--stdio"))))
+(when (eq system-type 'darwin)
+  (with-eval-after-load "eglot"
+    (add-to-list 'eglot-server-programs '(js-mode "/Users/lorenzocolombo/.nvm/versions/node/v18.16.1/bin/typescript-language-server" "--stdio"))))
+(when (eq system-type 'gnu/linux)
+  (with-eval-after-load "eglot"
+    (add-to-list 'eglot-server-programs '(js-mode "/usr/local/bin/typescript-language-server" "--stdio"))))
   
-   (when (eq system-type 'darwin)
-     (with-eval-after-load "eglot"
-       (add-to-list 'eglot-server-programs '(php-mode "/Users/lorenzocolombo/.nvm/versions/node/v18.16.1/bin/intelephense" "--stdio"))))
-    (when (eq system-type 'gnu/linux)
-     (with-eval-after-load "eglot"
-       (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio"))))
+(when (eq system-type 'darwin)
+  (with-eval-after-load "eglot"
+    (add-to-list 'eglot-server-programs '(php-mode "/Users/lorenzocolombo/.nvm/versions/node/v18.16.1/bin/intelephense" "--stdio"))))
+(when (eq system-type 'gnu/linux)
+  (with-eval-after-load "eglot"
+    (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio"))))
 #+end_src
 
 Bonus: this snippet enables format-on-save using LSP:
@@ -330,8 +340,8 @@ We need to install both ~yasnippet~ and a snippets' collection:
 Then we enable ~yasnippet~ globally and bind it to ~"C-c y"~ to work with ~company-mode~.
 
 #+begin_src emacs-lisp
-  (yas-global-mode 1)
-  (global-set-key (kbd "C-c y") 'company-yasnippet)
+(yas-global-mode 1)
+(global-set-key (kbd "C-c y") 'company-yasnippet)
 #+end_src
 
 ** Dashboard
@@ -385,7 +395,7 @@ And this is a function to auto indent when moving a line:
 (defun indent-region-advice (&rest ignored)
   (let ((deactivate deactivate-mark))
     (if (region-active-p)
-        (indent-region (region-beginning) (region-end))
+      (indent-region (region-beginning) (region-end))
       (indent-region (line-beginning-position) (line-end-position)))
     (setq deactivate-mark deactivate)))
 (advice-add 'move-text-up :after 'indent-region-advice)
@@ -427,8 +437,7 @@ Then we add configuration and keybinding to toggle the explorer:
 (require 'neotree)
 (global-set-key (kbd "C-c e") 'neotree-toggle)
 (setq neo-smart-open t)
-(when (display-graphic-p)
-  (require 'all-the-icons))
+(when (display-graphic-p) (require 'all-the-icons))
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 #+end_src
 
@@ -465,6 +474,6 @@ Then we add configuration and keybinding to toggle the explorer:
 ** PHP-Mode
 
 #+begin_src emacs-lisp
-  (unless (package-installed-p 'php-mode)
-    (package-install 'php-mode))
+(unless (package-installed-p 'php-mode)
+  (package-install 'php-mode))
 #+end_src
