@@ -441,6 +441,21 @@ Then we add configuration and keybinding to toggle the explorer:
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 #+end_src
 
+** Wrap-region
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'wrap-region)
+  (package-install 'wrap-region))
+#+end_src
+
+This sets ~wrap-region~ globally, with the exception of ~dired-mode~:
+
+#+begin_src emacs-lisp
+(require 'wrap-region)
+(wrap-region-mode t)
+(add-to-list 'wrap-region-except-modes 'dired-mode)
+#+end_src
+
 * Language specific modes 
 
 ** Markdown
