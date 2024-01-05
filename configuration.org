@@ -307,14 +307,14 @@ Finally, we add some language-specific hooks:
 
 (when (eq system-type 'darwin)
   (with-eval-after-load "eglot"
-    (add-to-list 'eglot-server-programs '(js-mode "/Users/lorenzocolombo/.nvm/versions/node/v18.16.1/bin/typescript-language-server" "--stdio"))))
+    (add-to-list 'eglot-server-programs '(js-mode "~/.nvm/versions/node/v18.16.1/bin/typescript-language-server" "--stdio"))))
 (when (eq system-type 'gnu/linux)
   (with-eval-after-load "eglot"
     (add-to-list 'eglot-server-programs '(js-mode "/usr/local/bin/typescript-language-server" "--stdio"))))
   
 (when (eq system-type 'darwin)
   (with-eval-after-load "eglot"
-    (add-to-list 'eglot-server-programs '(php-mode "/Users/lorenzocolombo/.nvm/versions/node/v18.16.1/bin/intelephense" "--stdio"))))
+    (add-to-list 'eglot-server-programs '(php-mode "~/.nvm/versions/node/v18.16.1/bin/intelephense" "--stdio"))))
 (when (eq system-type 'gnu/linux)
   (with-eval-after-load "eglot"
     (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio"))))
