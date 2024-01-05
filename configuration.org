@@ -486,9 +486,16 @@ This sets ~wrap-region~ globally, with the exception of ~dired-mode~:
 (setq web-mode-code-indent-offset 4)
 #+end_src
 
-** PHP-Mode
+** PHP Mode
 
 #+begin_src emacs-lisp
 (unless (package-installed-p 'php-mode)
   (package-install 'php-mode))
+#+end_src
+
+** CSV Mode
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'csv-mode)
+  (package-install 'csv-mode))
 #+end_src
