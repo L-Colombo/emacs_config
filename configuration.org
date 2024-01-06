@@ -509,3 +509,12 @@ This sets ~wrap-region~ globally, with the exception of ~dired-mode~:
 (unless (package-installed-p 'csv-mode)
   (package-install 'csv-mode))
 #+end_src
+
+** Emmet-mode
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'emmet-mode)
+  (package-install 'emmet-mode))
+
+(add-hook 'sgml-mode-hook 'emmet-mode)
+#+end_src
