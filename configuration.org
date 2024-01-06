@@ -35,8 +35,7 @@
 (set-frame-font "Iosevka Nerd Font Propo 20" nil t)
 #+end_src
 
-*** Window movements
-This bindings are chosen in order to avoid potential conflicts with other modes or packages that require ~S-<arrows>~ to do stuff.
+*** Window & window movements
 
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c <right>") #'windmove-right)
