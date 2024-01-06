@@ -457,6 +457,15 @@ This sets ~wrap-region~ globally, with the exception of ~dired-mode~:
 (add-to-list 'wrap-region-except-modes 'dired-mode)
 #+end_src
 
+** Aggressive indent
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'aggressive-indent)
+  (package-install 'aggressive-indent))
+
+(global-aggressive-indent-mode 1)
+#+end_src
+
 * Language specific modes 
 
 ** Markdown
