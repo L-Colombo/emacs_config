@@ -37,6 +37,8 @@
 
 *** Window & window movements
 
+These bindings are chosen in order to avoid potential conflicts with other modes or packages that require ~S-<arrows>~ to do stuff.
+
 #+begin_src emacs-lisp
 (global-set-key (kbd "C-c <right>") #'windmove-right)
 (global-set-key (kbd "C-c <left>") #'windmove-left)
