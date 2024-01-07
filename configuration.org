@@ -35,6 +35,14 @@
 (set-frame-font "Iosevka Nerd Font Propo 20" nil t)
 #+end_src
 
+*** Dired
+
+#+begin_src emacs-lisp
+(put 'dired-find-alternate-file 'disabled nil)
+
+(define-key dired-mode-map (kbd "RET") #'dired-find-alternate-file)
+#+end_src
+
 *** Window & window movements
 
 These bindings are chosen in order to avoid potential conflicts with other modes or packages that require ~S-<arrows>~ to do stuff.
