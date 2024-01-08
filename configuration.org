@@ -288,10 +288,24 @@ Keybindings for rapid access:
 
 ** Company-mode
 
+This takes care of installing and enabling ~company-mode~ globally.
+
 #+begin_src emacs-lisp
 (unless (package-installed-p 'company)
   (package-install 'company))
+
 (global-company-mode)
+#+end_src
+
+This section is instead dedicated to customizing and tweaking ~company-mode~.
+
+#+begin_src emacs-lisp
+(setq company-minimum-prefix-length 1)
+(setq company-selection-wrap-around t)
+(setq company-tooltip-align-annotations t)
+(setq company-tooltip-annotation-padding 2)
+(setq company-tooltip-limit 8)
+(setq company-show-quick-access 'left)
 #+end_src
 
 ** Eglot
