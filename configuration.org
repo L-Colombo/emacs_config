@@ -507,7 +507,7 @@ This sets ~wrap-region~ globally, with the exception of ~dired-mode~:
   (package-install 'markdown-mode))
 #+end_src
 
-** Web Mode
+** Web-Mode
 
 #+begin_src emacs-lisp
 (unless (package-installed-p 'web-mode)
@@ -528,20 +528,14 @@ This sets ~wrap-region~ globally, with the exception of ~dired-mode~:
 (setq web-mode-code-indent-offset 4)
 #+end_src
 
-** PHP Mode
+** PHP
 
 #+begin_src emacs-lisp
 (unless (package-installed-p 'php-mode)
   (package-install 'php-mode))
 #+end_src
 
-** CSV Mode
-
-#+begin_src emacs-lisp
-(unless (package-installed-p 'csv-mode)
-  (package-install 'csv-mode))
-#+end_src
-
+** CSV
 ** Emmet-mode
 
 #+begin_src emacs-lisp
@@ -549,4 +543,14 @@ This sets ~wrap-region~ globally, with the exception of ~dired-mode~:
   (package-install 'emmet-mode))
 
 (add-hook 'sgml-mode-hook 'emmet-mode)
+#+end_src
+
+** JavaScript
+
+#+begin_src emacs-lisp
+(unless (package-installed-p 'js2-mode)
+  (package-install 'js2-mode))
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-hook 'js-mode-hook 'js2-minor-mode)
 #+end_src
