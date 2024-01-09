@@ -306,6 +306,14 @@ This section is instead dedicated to customizing and tweaking ~company-mode~.
 (setq company-show-quick-access 'left)
 #+end_src
 
+~eglot~ might cause interference with ~company-mode~, especially with ~company-yasnippet~: this hook solves the conflict:
+
+#+begin_src emacs-lisp
+(defun add-company-yasnippet ()
+	(setq company-backends '((company-capf :with company-yasnippet))))
+(add-hook 'eglot--managed-mode-hook #'add-company-yasnippet)
+#+end_src
+
 ** Eglot
 
 Installation should not be needed, as Eglot is usually built-in. But, to be extra sure:
