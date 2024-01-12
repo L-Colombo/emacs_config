@@ -269,21 +269,17 @@ Keybindings for rapid access:
 This takes care of installing and enabling ~company-mode~ globally.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'company)
-  (package-install 'company))
-
-(global-company-mode)
-#+end_src
-
-This section is instead dedicated to customizing and tweaking ~company-mode~.
-
-#+begin_src emacs-lisp
-(setq company-minimum-prefix-length 1)
-(setq company-selection-wrap-around t)
-(setq company-tooltip-align-annotations t)
-(setq company-tooltip-annotation-padding 2)
-(setq company-tooltip-limit 8)
-(setq company-show-quick-access 'left)
+(use-package company
+  :ensure t
+  :init
+  (setq company-minimum-prefix-length 1
+		company-selection-wrap-around t
+		company-tooltip-align-annotations t
+		company-tooltip-annotation-padding 2
+		company-tooltip-limit 9
+		company-show-quick-access 'left)
+   :config
+  (global-company-mode))
 #+end_src
 
 ~eglot~ might cause interference with ~company-mode~, especially with ~company-yasnippet~: this hook solves the conflict:
@@ -344,17 +340,13 @@ Bonus: this snippet enables format-on-save using LSP:
 We need to install both ~yasnippet~ and a snippets' collection:
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'yasnippet)
-  (package-install 'yasnippet))
-(unless (package-installed-p 'yasnippet-snippets)
-  (package-install 'yasnippet-snippets))
-#+end_src
-
-Then we enable ~yasnippet~ globally and bind it to ~"C-c y"~ to work with ~company-mode~.
-
-#+begin_src emacs-lisp
-(yas-global-mode 1)
-(global-set-key (kbd "C-c y") 'company-yasnippet)
+(use-package yasnippet
+  :ensure t
+  :bind ("C-c y" . company-yasnippet)
+  :config
+  (yas-global-mode 1))
+(use-package yasnippet-snippets
+  :ensure t)
 #+end_src
 
 ** Dashboard
