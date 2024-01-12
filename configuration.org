@@ -32,6 +32,8 @@
 (setq auto-save-default nil)
 (setq ring-bell-function 'ignore)
 
+(put 'donwcase-region 'disabled nil)
+
 (set-frame-font "Iosevka Nerd Font Propo 20" nil t)
 #+end_src
 
@@ -68,39 +70,36 @@ These bindings are chosen in order to avoid potential conflicts with other modes
 The following block is to ensure that the themes usually set as default are installed before being loaded. This step is necessary only for the themes that may be set as default theme on startup to avoid errors.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'naga-theme)
-  (package-install 'naga-theme))
-(unless (package-installed-p 'gruber-darker-theme)
-  (package-install 'gruber-darker-theme))
-(unless (package-installed-p 'kaolin-themes)
-  (package-install 'kaolin-themes))
+(use-package naga-theme
+  :ensure t)
+(use-package gruber-darker-theme
+  :ensure t)
+(use-package kaolin-themes
+  :ensure t)
+(use-package zenburn-theme
+  :ensure t)
 #+end_src
 
 Then a theme can be set as default:
 
 #+begin_src emacs-lisp
-(load-theme 'kaolin-dark)
+(load-theme 'naga)
 #+end_src
 
 * Packages and Modes
 
 ** Helpful
 
-The ~helpful~ package provides a nicer interface for the standard help buffers.
+The ~helpful~ package provides a nicer interface for the standard help buffers. To do this more conveniently, it needs to override the standard help keybindings.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'helpful)
-  (package-install 'helpful))
-#+end_src
-
-To do this more conveniently, it needs to override the standard help keybindings
-
-#+begin_src emacs-lisp
-(global-set-key (kbd "C-h f") #'helpful-callable)
-(global-set-key (kbd "C-h v") #'helpful-variable)
-(global-set-key (kbd "C-h k") #'helpful-key)
-(global-set-key (kbd "C-h x") #'helpful-command)
-(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+(use-package helpful
+  :ensure t
+  :bind (("C-h f" . helpful-callable)
+		 ("C-h v" . helpful-variable)
+		 ("C-h k" . helpful-key)
+		 ("C-h x" . helpful-command)
+		 ("C-c C-d" . helpful-at-point)))
 #+end_src
 
 ** GIT interaction
@@ -108,23 +107,21 @@ To do this more conveniently, it needs to override the standard help keybindings
 First of all, we need to ensure ~magit~ as our Git client on Emacs;
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'magit)
-  (package-install 'magit))
+(use-package magit
+  :ensure t)
 #+end_src
 
 Then, we install the ~git-gutter~ for seamless Git interaction and enable it globally;
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'git-gutter)
-  (package-install 'git-gutter))
-
-(global-git-gutter-mode 1)
-(custom-set-variables '(git-gutter:update-interval 1))
+(use-package git-gutter
+  :ensure t
+  :config (global-git-gutter-mode 1))
 #+end_src
 
 Finally, we set the folowing key-bindings:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp 
 (global-set-key (kbd "C-c p") 'git-gutter:previous-hunk)
 (global-set-key (kbd "C-c n") 'git-gutter:next-hunk)
 (global-set-key (kbd "C-c v s") 'git-gutter:stage-hunk)
@@ -134,47 +131,36 @@ Finally, we set the folowing key-bindings:
 ** Expand-Region
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'expand-region)
-  (package-install 'expand-region))
-
-(require 'expand-region)
-(global-set-key (kbd "C-ù") 'er/expand-region)
+(use-package expand-region
+  :ensure t
+  :init (pending-delete-mode t)
+  :config (require 'expand-region)
+  :bind ("C-ù" . er/expand-region))
+;; (require 'expand-region)
+;; (global-set-key (kbd "C-ù") 'er/expand-region)
 #+end_src
 
 With ~pending-delete-mode~ enabled, highligted text can be rapidly changed.
 
-#+begin_src emacs-lisp
-(pending-delete-mode t)
-#+end_src
-
 ** Ace-Jump
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'ace-jump-mode)
-  (package-install 'ace-jump-mode))
-
-(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
-(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+(use-package ace-jump-mode
+  :ensure t
+  :bind (("C-c SPC" . ace-jump-mode)
+		 ("C-x SPC" . ace-jump-mode-pop-mark)))
 #+end_src
 
 ** Pdf-Tools
 This package is important as it is used with ~AUCTeX~ as pdf viewer.
 
-First, we install and setup:
+The list of incompatible modes is set to empty beacuse of conflicts that may arise, especially with line numbers mode.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'pdf-tools)
-  (package-install 'pdf-tools))
-
 (use-package pdf-tools
-  :config
-  (pdf-tools-install))
-#+end_src
-
-Then we empty the list of incompatible modes to avoid errors when displaying pdfs:
-
-#+begin_src emacs-lisp
-(setq pdf-view-incompatible-modes '())
+  :ensure t
+  :init (setq pdf-view-incompatible-modes '())
+  :config (pdf-tools-install))
 #+end_src
 
 ** LaTeX
@@ -182,23 +168,17 @@ Then we empty the list of incompatible modes to avoid errors when displaying pdf
 The basic package for working with LaTeX on Emacs is the ~AUCTeX~ package.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'auctex)
-  (package-install 'auctex))
-
-(require 'latex)
-(setq TeX-parse-self t)
-(setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-      TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-      TeX-source-correlate-start-server t)
-(add-hook 'TeX-after-compilation-finished-functions
-          #'TeX-revert-document-buffer)
-(with-eval-after-load 'tex
-  (setq TeX-source-correlate-method '((pdf . synctex)))
-  (TeX-source-correlate-mode))
-
-(eval-after-load "tex"
-  '(define-key TeX-source-correlate-map [C-down-mouse-1]
-	       #'TeX-view-mouse))
+(use-package auctex
+  :ensure t
+  :init (require 'latex)
+  (setq TeX-parse-self t
+		TeX-view-program-selection '((output-pdf "PDF Tools"))
+		TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+		TeX-source-correlate-start-server t
+		Tex-source-correlate-method '((pdf . synctex)))
+  (TeX-source-correlate-mode)
+  (define-key TeX-source-correlate-map [C-down-mouse-1] #'TeX-view-mouse)
+  (add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer))
 #+end_src
 
 Reftex provides nice automplete features to LaTeX, especially for bibliography and indexes.
@@ -214,19 +194,23 @@ Reftex provides nice automplete features to LaTeX, especially for bibliography a
 We only need to install ~vertico~ and ~ido-vertical-mode~, as ~ido~ is a built-in package.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'ido-vertical-mode)
-  (package-install 'ido-vertical-mode))
-(unless (package-installed-p 'vertico)
-  (package-install 'vertico))
+(use-package ido-vertical-mode
+  :ensure t
+  :init
+  (require 'ido-vertical-mode)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+  :config
+  (ido-mode 1)
+  (ido-vertical-mode 1))
 #+end_src
 
-Then, we configure and activate ~ido-mode~ and ~vertico-mode~.
+Installation and configuration of ~vertico~.
 
 #+begin_src emacs-lisp
-(ido-mode 1)
-(vertico-mode 1)
-(ido-vertical-mode 1)
-(setq ido-vertical-define-keys 'C-n-and-C-p-only)
+(use-package vertico
+  :ensure t
+  :config
+  (vertico-mode 1))
 #+end_src
 
 ** Org-mode and related
@@ -236,30 +220,26 @@ Then, we configure and activate ~ido-mode~ and ~vertico-mode~.
 ~org-mode~ is built-in, so it needs only to be configured.
 
 #+begin_src emacs-lisp
-(add-hook 'org-mode-hook 'org-indent-mode)
-(setq org-hide-emphasis-markers t)
-(setq org-startup-folded 'content)
-(setq org-startup-truncated nil)
-(setq org-directory "~/.notes")
-#+end_src
-
-The following variables disable auto-indenting
-
-#+begin_src emacs-lisp
-(setq org-edit-src-content-indentation 0)
-(setq org-src-tab-acts-natively t)
-(setq org-src-preserve-indentation t)
+(use-package org
+  :ensure t
+  :init
+  (setq org-hide-emphasis-markers t
+		org-startup-folded 'content
+		org-startup-truncated nil
+		org-directory "~/.notes"
+		org-edit-src-content-indentation 0
+		org-src-tab-acts-natively t
+		org-src-preserve-indentation t)
+  :hook (org-mode . org-indent-mode))
 #+end_src
 
 *** Bullets
 ~org-bullets~ needs to be installed and attached via hook to ~org-mode~.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'org-bullets)
-  (package-install 'org-bullets))
-
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(use-package org-bullets
+  :ensure t
+  :hook (org-mode . org-bullets-mode))
 #+end_src
 
 *** Org-agenda & Org-capture
@@ -393,8 +373,8 @@ We first need to install the ~dashboard~ package and the ~all-the-icons~ package
 (dashboard-setup-startup-hook)
 
 (setq dashboard-items '((bookmarks . 7)
-		            (recents . 7)
-			    (projects . 7)))
+						(recents . 7)
+						(projects . 7)))
 
 (setq dashboard-icon-type 'all-the-icons)
 (setq dashboard-set-heading-icons nil)
@@ -497,7 +477,7 @@ This sets ~wrap-region~ globally, with the exception of ~dired-mode~:
 
 (global-aggressive-indent-mode 1)
 #+end_src
-
+	
 * Language specific modes 
 
 ** Markdown
