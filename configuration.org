@@ -354,23 +354,21 @@ We need to install both ~yasnippet~ and a snippets' collection:
 We first need to install the ~dashboard~ package and the ~all-the-icons~ package to add the icons. Remember that ~all-the-icons~ needs to initialize with the comand ~M-x all-the-icons-install-fonts RET~.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'dashboard)
-  (package-install 'dashboard))
-(unless (package-installed-p 'all-the-icons)
-  (package-install 'all-the-icons))
-#+end_src
+(use-package all-the-icons
+  :ensure t)
 
-#+begin_src emacs-lisp
-(require 'dashboard)
-(dashboard-setup-startup-hook)
-
-(setq dashboard-items '((bookmarks . 7)
-						(recents . 7)
-						(projects . 7)))
-
-(setq dashboard-icon-type 'all-the-icons)
-(setq dashboard-set-heading-icons nil)
-(setq dashboard-set-file-icons t)
+(use-package dashboard
+  :ensure t
+  :init
+  (require 'dashboard)
+  (setq dashboard-icon-type 'all-the-icons)
+  (setq dashboard-set-heading-icons nil)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-items '((bookmarks . 7)
+						  (recents . 7)
+						  (projects . 7)))
+  :config
+  (dashboard-setup-startup-hook))
 #+end_src
 
 ** Projectile
