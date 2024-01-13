@@ -14,5 +14,6 @@ The configuration is done in a literate way via the `configuration.org` file, wh
 
 ## Roadmap
 
++ Move LSP configuration from Eglot to `LSP-mode`;
 + Install and configure `dap-mode`;
-+ Standardize package setup with `use-package`;
++ ~~Standardize package setup with `use-package`~~

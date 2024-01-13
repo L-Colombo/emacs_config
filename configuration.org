@@ -461,54 +461,52 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
 ** Markdown
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'markdown-mode)
-  (package-install 'markdown-mode))
+(use-package markdown-mode
+  :ensure t)
 #+end_src
 
 ** Web-Mode
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'web-mode)
-  (package-install 'web-mode))
-
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-
-(setq web-mode-markup-indent-offset 4)
-(setq web-mode-css-indent-offset 4)
-(setq web-mode-code-indent-offset 4)
+(use-package web-mode
+  :ensure t
+  :init
+  (setq web-mode-markup-indent-offset 4
+		web-mode-css-indent-offset 4
+		web-mode-code-indent-offset 4)
+  :config
+  (require 'web-mode))
 #+end_src
 
 ** PHP
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'php-mode)
-  (package-install 'php-mode))
+(use-package php-mode
+  :ensure t)
 #+end_src
 
 ** CSV
+
+#+begin_src emacs-lisp
+(use-package csv-mode
+  :ensure t)
+#+end_src
+
 ** Emmet-mode
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'emmet-mode)
-  (package-install 'emmet-mode))
-
-(add-hook 'sgml-mode-hook 'emmet-mode)
+(use-package emmet-mode
+  :ensure t
+  :config
+  (add-hook 'sgml-mode-hook 'emmet-mode))
 #+end_src
 
 ** JavaScript
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'js2-mode)
-  (package-install 'js2-mode))
-
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-hook 'js-mode-hook 'js2-minor-mode)
+(use-package js2-mode
+  :ensure t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+  :hook (js-mode .  js2-minor-mode))
 #+end_src
