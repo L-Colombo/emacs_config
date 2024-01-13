@@ -83,7 +83,7 @@ The following block is to ensure that the themes usually set as default are inst
 Then a theme can be set as default:
 
 #+begin_src emacs-lisp
-(load-theme 'naga)
+(load-theme 'zenburn)
 #+end_src
 
 * Packages and Modes
@@ -374,11 +374,12 @@ We first need to install the ~dashboard~ package and the ~all-the-icons~ package
 ** Projectile
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'projectile)
-  (package-install 'projectile))
-
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(use-package projectile
+  :ensure t
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :config
+  (projectile-mode +1))
 #+end_src
 
 ** Move-text
@@ -386,10 +387,10 @@ We first need to install the ~dashboard~ package and the ~all-the-icons~ package
 Installation and configuration to use default key-bindings:
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'move-text)
-  (package-install 'move-text))
-
-(move-text-default-bindings)
+(use-package move-text
+  :ensure t
+  :init
+  (move-text-default-bindings))
 #+end_src
 
 And this is a function to auto indent when moving a line:
@@ -410,17 +411,13 @@ And this is a function to auto indent when moving a line:
 Install ~doom-modeline~ package and the ~nerd-icons~ package; in order for this to run properly, it is required to run the command ~M-x nerd-icons-install-fonts RET~.
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'doom-modeline)
-  (package-install 'doom-modeline))
-(unless (package-installed-p 'nerd-icons)
-  (package-install 'nerd-icons))
-#+end_src
-
-Enabling the ~doom-modeline~:
-
-#+begin_src emacs-lisp
-(require 'doom-modeline)
-(doom-modeline-mode 1)
+(use-package nerd-icons
+  :ensure t)
+(use-package doom-modeline
+  :ensure t
+  :config
+  (require 'doom-modeline)
+  (doom-modeline-mode 1))
 #+end_src
 
 ** Tree file explorer (neotree)
@@ -428,44 +425,35 @@ Enabling the ~doom-modeline~:
 Install the ~neotree~ package and the ~all-the-icons~ package:
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'neotree)
-  (package-install 'neotree))
-(unless (package-installed-p 'all-the-icons)
-  (package-install 'all-the-icons))
-#+end_src
-
-Then we add configuration and keybinding to toggle the explorer:
-
-#+begin_src emacs-lisp
-(require 'neotree)
-(global-set-key (kbd "C-c e") 'neotree-toggle)
-(setq neo-smart-open t)
-(when (display-graphic-p) (require 'all-the-icons))
-(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+(use-package neotree
+  :ensure t
+  :bind ("C-c e" . neotree-toggle)
+  :init
+  (require 'neotree)
+  (setq neo-smart-open t)
+  (when (display-graphic-p) (require 'all-the-icons))
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
 #+end_src
 
 ** Wrap-region
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'wrap-region)
-  (package-install 'wrap-region))
-#+end_src
-
-This sets ~wrap-region~ globally, with the exception of ~dired-mode~:
-
-#+begin_src emacs-lisp
-(require 'wrap-region)
-(wrap-region-mode t)
-(add-to-list 'wrap-region-except-modes 'dired-mode)
+(use-package wrap-region
+  :ensure t
+  :init
+  (setq wrap-region-except-modes 'dired-mode)
+  :config
+  (require 'wrap-region)
+  (wrap-region-mode t))
 #+end_src
 
 ** Aggressive indent
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'aggressive-indent)
-  (package-install 'aggressive-indent))
-
-(global-aggressive-indent-mode 1)
+(use-package aggressive-indent
+  :ensure t
+  :config
+  (global-aggressive-indent-mode 1))
 #+end_src
 	
 * Language specific modes 
