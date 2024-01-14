@@ -447,15 +447,6 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
   (wrap-region-mode t))
 #+end_src
 
-** Aggressive indent
-
-#+begin_src emacs-lisp
-(use-package aggressive-indent
-  :ensure t
-  :config
-  (global-aggressive-indent-mode 1))
-#+end_src
-
 ** Undo-tree
 
 #+begin_src emacs-lisp
