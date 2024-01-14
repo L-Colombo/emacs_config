@@ -83,7 +83,7 @@ The following block is to ensure that the themes usually set as default are inst
 Then a theme can be set as default:
 
 #+begin_src emacs-lisp
-(load-theme 'zenburn)
+(load-theme 'kaolin-dark)
 #+end_src
 
 * Packages and Modes
@@ -288,51 +288,37 @@ This takes care of installing and enabling ~company-mode~ globally.
 (defun add-company-yasnippet ()
 	(setq company-backends '((company-capf :with company-yasnippet))))
 (add-hook 'eglot--managed-mode-hook #'add-company-yasnippet)
+(add-hook 'lsp-managed-mode-hook #'add-company-yasnippet)
 #+end_src
 
-** Eglot
+** LSP
 
-Installation should not be needed, as Eglot is usually built-in. But, to be extra sure:
+~Lsp-mode~ itself
 
 #+begin_src emacs-lisp
-(unless (package-installed-p 'eglot)
-  (package-install 'eglot))
+(use-package lsp-mode
+  :ensure t
+  :init
+  (setq lsp-keymap-prefix "C-c l"
+		lsp-headerline-breadcrumb-enable nil
+		lsp-modeline-code-actions-segments '(count icon name))
+  :hook
+  ((c-mode . lsp-deferred)
+   (c++-mode . lsp-deferred)
+   (php-mode . lsp-deferred))
+  :commands (lsp lsp-deferred))
 #+end_src
 
-Then, we disable annoying Eldoc messages by default:
-
 #+begin_src emacs-lisp
-(setq eglot-managed-mode-hook (list (lambda () (eldoc-mode -1))))
-#+end_src
-
-Finally, we add some language-specific hooks:
-
-#+begin_src emacs-lisp
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
-(add-hook 'python-mode-hook 'eglot-ensure)
-(add-hook 'php-mode-hook 'eglot-ensure)
-(add-hook 'js-mode-hook 'eglot-ensure)
-
-(when (eq system-type 'darwin)
-  (with-eval-after-load "eglot"
-    (add-to-list 'eglot-server-programs '(js-mode "~/.nvm/versions/node/v18.16.1/bin/typescript-language-server" "--stdio"))))
-(when (eq system-type 'gnu/linux)
-  (with-eval-after-load "eglot"
-    (add-to-list 'eglot-server-programs '(js-mode "/usr/local/bin/typescript-language-server" "--stdio"))))
-  
-(when (eq system-type 'darwin)
-  (with-eval-after-load "eglot"
-    (add-to-list 'eglot-server-programs '(php-mode "~/.nvm/versions/node/v18.16.1/bin/intelephense" "--stdio"))))
-(when (eq system-type 'gnu/linux)
-  (with-eval-after-load "eglot"
-    (add-to-list 'eglot-server-programs '(php-mode "/usr/local/bin/intelephense" "--stdio"))))
-#+end_src
-
-Bonus: this snippet enables format-on-save using LSP:
-
-#+begin_src emacs-lisp
-(add-hook 'before-save-hook 'eglot-format)
+(use-package lsp-ui
+  :ensure t
+  :hook
+  (lsp-mode . lsp-ui-mode)
+  :init
+  (setq lsp-ui-sideline-show-diagnostics t
+		lsp-ui-sideline-show-code-actions t
+		lsp-ui-sideline-delay 0.0
+		lsp-ui-doc-position 'top))
 #+end_src
 
 ** Yasnippet
@@ -483,7 +469,8 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
 
 #+begin_src emacs-lisp
 (use-package php-mode
-  :ensure t)
+  :ensure t
+  :hook (php-mode . lsp-deferred))
 #+end_src
 
 ** CSV
@@ -509,5 +496,16 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
   :ensure t
   :init
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  :hook (js-mode .  js2-minor-mode))
+  :hook ((js-mode . lsp-deferred)
+		 (js-mode .  js2-minor-mode)))
+#+end_src
+
+** Python
+
+#+begin_src emacs-lisp
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  
 #+end_src
