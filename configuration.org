@@ -78,12 +78,15 @@ The following block is to ensure that the themes usually set as default are inst
   :ensure t)
 (use-package zenburn-theme
   :ensure t)
+(use-package klere-theme
+  :ensure t)
 #+end_src
 
 Then a theme can be set as default:
 
 #+begin_src emacs-lisp
-(load-theme 'kaolin-dark)
+(load-theme 'klere)
+(set-cursor-color "#ffffff")
 #+end_src
 
 * Packages and Modes
@@ -300,6 +303,7 @@ This takes care of installing and enabling ~company-mode~ globally.
   :ensure t
   :init
   (setq lsp-keymap-prefix "C-c l"
+		lsp-auto-guess-root t
 		lsp-headerline-breadcrumb-enable nil
 		lsp-modeline-code-actions-segments '(count icon name))
   :hook
@@ -315,8 +319,10 @@ This takes care of installing and enabling ~company-mode~ globally.
   :hook
   (lsp-mode . lsp-ui-mode)
   :init
-  (setq lsp-ui-sideline-show-diagnostics t
+  (setq lsp-ui-sideline-enable t
+		lsp-ui-sideline-show-diagnostics t
 		lsp-ui-sideline-show-code-actions t
+		lsp-ui-sideline-update-mode 'line
 		lsp-ui-sideline-delay 0.0
 		lsp-ui-doc-position 'top))
 #+end_src
