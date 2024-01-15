@@ -85,8 +85,7 @@ The following block is to ensure that the themes usually set as default are inst
 Then a theme can be set as default:
 
 #+begin_src emacs-lisp
-(load-theme 'klere)
-(set-cursor-color "#ffffff")
+(load-theme 'zenburn)
 #+end_src
 
 * Packages and Modes
@@ -296,6 +295,11 @@ This takes care of installing and enabling ~company-mode~ globally.
 
 ** LSP
 
+#+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t)
+#+end_src
+
 ~Lsp-mode~ itself
 
 #+begin_src emacs-lisp
@@ -303,6 +307,7 @@ This takes care of installing and enabling ~company-mode~ globally.
   :ensure t
   :init
   (setq lsp-keymap-prefix "C-c l"
+		lsp-diagnostics-provider :flycheck
 		lsp-auto-guess-root t
 		lsp-headerline-breadcrumb-enable nil
 		lsp-modeline-code-actions-segments '(count icon name))
@@ -313,6 +318,8 @@ This takes care of installing and enabling ~company-mode~ globally.
   :commands (lsp lsp-deferred))
 #+end_src
 
+~Lsp-ui~
+
 #+begin_src emacs-lisp
 (use-package lsp-ui
   :ensure t
@@ -320,11 +327,11 @@ This takes care of installing and enabling ~company-mode~ globally.
   (lsp-mode . lsp-ui-mode)
   :init
   (setq lsp-ui-sideline-enable t
+		lsp-ui-sideline-show-hover nil
 		lsp-ui-sideline-show-diagnostics t
-		lsp-ui-sideline-show-code-actions t
+		lsp-ui-sideline-show-code-actions nil
 		lsp-ui-sideline-update-mode 'line
-		lsp-ui-sideline-delay 0.0
-		lsp-ui-doc-position 'top))
+		lsp-ui-sideline-delay 0.0))
 #+end_src
 
 ** Yasnippet
