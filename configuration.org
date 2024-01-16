@@ -104,6 +104,15 @@ The ~helpful~ package provides a nicer interface for the standard help buffers. 
 		 ("C-c C-d" . helpful-at-point)))
 #+end_src
 
+** Epub reader
+
+#+begin_src emacs-lisp
+(use-package nov
+  :ensure t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode)))
+#+end_src
+
 ** GIT interaction
 
 First of all, we need to ensure ~magit~ as our Git client on Emacs;
