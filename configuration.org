@@ -15,6 +15,17 @@
   (package-install 'use-package))
 #+end_src
 
+This is to ensure that all packages are always up to date:
+
+#+begin_src emacs-lisp
+(use-package auto-package-update
+  :ensure t
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+#+end_src
+
 ** Generic settings
 
 *** Defaults
@@ -85,7 +96,8 @@ The following block is to ensure that the themes usually set as default are inst
 Then a theme can be set as default:
 
 #+begin_src emacs-lisp
-(load-theme 'zenburn)
+(load-theme 'klere)
+(set-cursor-color "#ffffff")
 #+end_src
 
 * Packages and Modes
