@@ -45,7 +45,7 @@ This is to ensure that all packages are always up to date:
 
 (put 'donwcase-region 'disabled nil)
 
-(set-frame-font "Iosevka Nerd Font Propo 20" nil t)
+(set-frame-font "UbuntuMono Nerd Font Propo 20" nil t)
 #+end_src
 
 *** Dired
@@ -544,4 +544,11 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp))))  
+#+end_src
+
+** Dotenv-mode
+
+#+begin_src emacs-lisp
+(use-package dotenv-mode
+  :ensure t)
 #+end_src
