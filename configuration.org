@@ -402,6 +402,13 @@ We first need to install the ~dashboard~ package and the ~all-the-icons~ package
   (projectile-mode +1))
 #+end_src
 
+~ripgrep.el~, to have Ripgrep capabilities with ~projectile-ripgrep~ command
+
+#+begin_src emacs-lisp
+(use-package ripgrep
+  :ensure t)
+#+end_src
+
 ** Move-text
 
 Installation and configuration to use default key-bindings:
