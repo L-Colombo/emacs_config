@@ -399,6 +399,7 @@ We first need to install the ~dashboard~ package and the ~all-the-icons~ package
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :config
+  (define-key projectile-command-map (kbd "s") 'projectile-ripgrep)
   (projectile-mode +1))
 #+end_src
 
