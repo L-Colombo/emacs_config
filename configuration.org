@@ -486,6 +486,18 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
   (global-undo-tree-mode))
 #+end_src
 
+** Treesitter
+
+#+begin_src emacs-lisp
+(use-package tree-sitter
+  :ensure t
+  :config
+  (global-tree-sitter-mode)
+  :hook
+  (tree-sitter-after-on . tree-sitter-hl-mode))
+(use-package tree-sitter-langs
+  :ensure t)
+#+end_src
 * Language specific modes 
 
 ** Markdown
