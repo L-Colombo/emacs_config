@@ -572,3 +572,10 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
 (use-package dotenv-mode
   :ensure t)
 #+end_src
+
+** Yaml-mode
+
+#+begin_src emacs-lisp :tangle yes
+(use-package yaml-mode
+  :ensure t)
+#+end_src
