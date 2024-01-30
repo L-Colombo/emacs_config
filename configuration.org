@@ -575,7 +575,7 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
 
 ** Yaml-mode
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (use-package yaml-mode
   :ensure t)
 #+end_src
