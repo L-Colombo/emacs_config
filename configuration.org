@@ -45,7 +45,7 @@ This is to ensure that all packages are always up to date:
 
 (put 'donwcase-region 'disabled nil)
 
-(set-frame-font "UbuntuMono Nerd Font Propo 20" nil t)
+(set-frame-font "IntoneMono Nerd Font Propo 18" nil t)
 #+end_src
 
 *** Dired
@@ -90,14 +90,11 @@ The following block is to ensure that the themes usually set as default are inst
 (use-package zenburn-theme
   :ensure t)
 (use-package klere-theme
-  :ensure t)
-#+end_src
-
-Then a theme can be set as default:
-
-#+begin_src emacs-lisp
-(load-theme 'klere)
-(set-cursor-color "#ffffff")
+  :ensure t
+  :init
+  (load-theme 'klere)
+  :config
+  (set-cursor-color "#ffffff"))
 #+end_src
 
 * Packages and Modes
