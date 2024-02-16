@@ -10,10 +10,10 @@ The configuration is done in a literate way via the `configuration.org` file, wh
 
 ## Caveat
 
-+ Upon the first installation, it might throw some errors, mainly connect with the necessety to run `M-x package-refresh-contents RET` to sync the repos and install all the packages that need to be installed.
++ Upon the first installation, it might throw some errors, mainly connected to the necessety to run `M-x package-refresh-contents RET` to sync the repos and install all the packages that need to be installed.
 
 ## Roadmap
 
-+ Move LSP configuration from Eglot to `LSP-mode`;
++ ~~Move LSP configuration from Eglot to `LSP-mode`~~;
 + Install and configure `dap-mode`;
 + ~~Standardize package setup with `use-package`~~
