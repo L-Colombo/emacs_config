@@ -332,7 +332,8 @@ This takes care of installing and enabling ~company-mode~ globally.
   :hook
   ((c-mode . lsp-deferred)
    (c++-mode . lsp-deferred)
-   (php-mode . lsp-deferred))
+   (php-mode . lsp-deferred)
+   (ruby-mode . lsp-deferred))
   :commands (lsp lsp-deferred))
 #+end_src
 
@@ -581,5 +582,18 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
 
 #+begin_src emacs-lisp
 (use-package haskell-mode
+  :ensure t
+  :config
+  (add-to-list 'exec-path (concat (getenv "HOME") "/.ghcup/bin")))
+
+(use-package lsp-haskell
   :ensure t)
+#+end_src
+
+** Ruby-mode
+
+This is so that lsp-mode can find ~solargraph~ language server (which needs to be installed manually by running ~gem install solargraph~) in ~PATH~ and ~lsp-mode~ is able to connect.
+
+#+begin_src emacs-lisp
+(add-to-list 'exec-path (concat (getenv "HOME") "/.rbenv/versions/3.2.2/bin"))
 #+end_src
