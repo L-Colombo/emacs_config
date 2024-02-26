@@ -512,6 +512,22 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
 (use-package tree-sitter-langs
   :ensure t)
 #+end_src
+
+** Highlight-indent-mode
+
+#+begin_src emacs-lisp
+(use-package highlight-indent-guides
+  :ensure t
+  :hook
+  (prog-mode . highlight-indent-guides-mode)
+  :init
+  (setq highlight-indent-guides-method 'character
+		highlight-indent-guides-auto-enabled nil
+		highlight-indent-guides-auto-odd-face-perc 80
+		highlight-indent-guides-auto-even-face-perc 80
+		highlight-indent-guides-auto-charachter-face-perc 100))
+#+end_src
+
 * Language specific modes 
 
 ** Markdown
