@@ -605,4 +605,5 @@ This is so that lsp-mode can find ~solargraph~ language server (which needs to b
 
 #+begin_src emacs-lisp
 (add-to-list 'exec-path (concat (getenv "HOME") "/.rbenv/versions/3.2.2/bin"))
+(add-to-list 'exec-path (concat (getenv "HOME") "/.rbenv/shims/"))
 #+end_src
