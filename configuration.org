@@ -45,7 +45,7 @@ This is to ensure that all packages are always up to date:
 
 (put 'donwcase-region 'disabled nil)
 
-(set-frame-font "IntoneMono Nerd Font Propo 18" nil t)
+(set-frame-font "IntoneMono Nerd Font Propo 16" nil t)
 #+end_src
 
 *** Dired
@@ -353,6 +353,12 @@ This takes care of installing and enabling ~company-mode~ globally.
 		lsp-ui-sideline-delay 0.0))
 #+end_src
 
+** DAP-mode
+#+begin_src emacs-lisp
+(use-package dap-mode
+  :ensure t)
+#+end_src
+
 ** Yasnippet
 
 We need to install both ~yasnippet~ and a snippets' collection:
@@ -551,7 +557,10 @@ Install the ~neotree~ package and the ~all-the-icons~ package:
   :init
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   :hook ((js-mode . lsp-deferred)
-		 (js-mode .  js2-minor-mode)))
+		 (js-mode .  js2-minor-mode))
+  :config
+  (require 'dap-node)
+  (dap-node-setup))
 #+end_src
 
 ** Python
