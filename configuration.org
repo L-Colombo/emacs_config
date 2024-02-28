@@ -319,6 +319,16 @@ This takes care of installing and enabling ~company-mode~ globally.
 (add-hook 'lsp-managed-mode-hook #'add-company-yasnippet)
 #+end_src
 
+** Prescient
+
+#+begin_src emacs-lisp
+(use-package company-prescient
+  :ensure t
+  :after company
+  :config
+  (company-prescient-mode 1))
+#+end_src
+
 ** LSP
 
 #+begin_src emacs-lisp
