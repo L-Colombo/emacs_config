@@ -94,16 +94,12 @@ The following block is to ensure that the themes usually set as default are inst
   :ensure t)
 (use-package gruber-darker-theme
   :ensure t)
-(use-package kaolin-themes
-  :ensure t)
-(use-package zenburn-theme
+(use-package doom-themes
+  :init
+  (load-theme 'doom-Iosvkem)
   :ensure t)
 (use-package klere-theme
-  :ensure t
-  :init
-  (load-theme 'klere)
-  :config
-  (set-cursor-color "#ffffff"))
+  :ensure t)
 #+end_src
 
 * Packages and Modes
@@ -651,4 +647,19 @@ This is so that lsp-mode can find ~solargraph~ language server (which needs to b
 #+begin_src emacs-lisp
 (use-package lsp-java
   :ensure t)
+#+end_src
+
+** tailwind
+
+#+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/lsp-tailwindcss")
+;; (use-package lsp-tailwindcss
+;;   :init
+;;   (setq lsp-tailwindcss-add-on-mode t
+;; 		lsp-tailwindcss-skip-config-check t))
+(add-to-list 'lsp-language-id-configuration '("\\.twig$" . "html"))
+(require 'lsp-tailwindcss)
+(setq lsp-tailwindcss-add-on-mode t
+	  lsp-tailwindcss-skip-config-check t)
+(add-hook 'web-mode-hook #'lsp-deferred)
 #+end_src
