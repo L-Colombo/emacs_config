@@ -96,7 +96,7 @@ The following block is to ensure that the themes usually set as default are inst
   :ensure t)
 (use-package doom-themes
   :init
-  (load-theme 'doom-Iosvkem)
+  (load-theme 'doom-old-hope)
   :ensure t)
 (use-package klere-theme
   :ensure t)
@@ -649,17 +649,26 @@ This is so that lsp-mode can find ~solargraph~ language server (which needs to b
   :ensure t)
 #+end_src
 
-** tailwind
+** Tailwindcss (~lsp-mode~ integration)
+
+Note that ~lsp-tailwindcss~ has to be manually cloned from the GitHub repo [[https://github.com/merrickluo/lsp-tailwindcss]].
 
 #+begin_src emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/lsp-tailwindcss")
-;; (use-package lsp-tailwindcss
-;;   :init
-;;   (setq lsp-tailwindcss-add-on-mode t
-;; 		lsp-tailwindcss-skip-config-check t))
 (add-to-list 'lsp-language-id-configuration '("\\.twig$" . "html"))
 (require 'lsp-tailwindcss)
 (setq lsp-tailwindcss-add-on-mode t
-	  lsp-tailwindcss-skip-config-check t)
+	  lsp-tailwindcss-skip-config-check t
+	  lsp-tailwindcss-major-modes '(web-mode)) ;; so that it does not interfere with typescript-mode
 (add-hook 'web-mode-hook #'lsp-deferred)
+#+end_src
+
+** Typescritp-mode
+
+#+begin_src emacs-lisp
+(use-package typescript-mode
+  :ensure t
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 4))
 #+end_src
