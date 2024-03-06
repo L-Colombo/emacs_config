@@ -656,6 +656,7 @@ Note that ~lsp-tailwindcss~ has to be manually cloned from the GitHub repo [[htt
 #+begin_src emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/lsp-tailwindcss")
 (add-to-list 'lsp-language-id-configuration '("\\.twig$" . "html"))
+(add-to-list 'lsp-language-id-configuration '("\\.blade.php" . "html"))
 (require 'lsp-tailwindcss)
 (setq lsp-tailwindcss-add-on-mode t
 	  lsp-tailwindcss-skip-config-check t
