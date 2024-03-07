@@ -77,6 +77,18 @@ This is to remap to ~C-c DEL~ the command ~kill-buffer-and-window~:
 (global-set-key (kbd "C-c DEL") #'kill-buffer-and-window)
 #+end_src
 
+*** Open ~eshell~ buffers in a split window
+
+#+begin_src emacs-lisp
+(defun open-eshell-in-split-window ()
+  (interactive)
+  (let ((buf (eshell)))
+	(switch-to-buffer (other-buffer buf))
+	(switch-to-buffer-other-window buf)))
+
+(global-set-key (kbd "C-M-<return>") #'open-eshell-in-split-window)
+#+end_src
+
 *** Set meta key to CMD on MacOs
 
 #+begin_src emacs-lisp
@@ -96,7 +108,7 @@ The following block is to ensure that the themes usually set as default are inst
   :ensure t)
 (use-package doom-themes
   :init
-  (load-theme 'doom-old-hope)
+  (load-theme 'doom-one)
   :ensure t)
 (use-package klere-theme
   :ensure t)
