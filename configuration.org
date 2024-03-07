@@ -77,18 +77,6 @@ This is to remap to ~C-c DEL~ the command ~kill-buffer-and-window~:
 (global-set-key (kbd "C-c DEL") #'kill-buffer-and-window)
 #+end_src
 
-*** Open ~eshell~ buffers in a split window
-
-#+begin_src emacs-lisp
-(defun open-eshell-in-split-window ()
-  (interactive)
-  (let ((buf (eshell)))
-	(switch-to-buffer (other-buffer buf))
-	(switch-to-buffer-other-window buf)))
-
-(global-set-key (kbd "C-M-<return>") #'open-eshell-in-split-window)
-#+end_src
-
 *** Set meta key to CMD on MacOs
 
 #+begin_src emacs-lisp
@@ -108,10 +96,40 @@ The following block is to ensure that the themes usually set as default are inst
   :ensure t)
 (use-package doom-themes
   :init
-  (load-theme 'doom-one)
+  (load-theme 'doom-one t)
   :ensure t)
 (use-package klere-theme
   :ensure t)
+#+end_src
+
+*** Custom functions and mappings
+
+This function opens an ~eshell~ buffer in a split window at the current working directory
+
+#+begin_src emacs-lisp
+(defun open-eshell-in-split-window ()
+  (interactive)
+  (let ((buf (eshell)))
+	(switch-to-buffer (other-buffer buf))
+	(switch-to-buffer-other-window buf)))
+
+(global-set-key (kbd "C-M-<return>") #'open-eshell-in-split-window)
+#+end_src
+
+This function mimics th ~%~ command of Vi and Vi-like editors, moving the point to the matching parenthesis.
+It is bound to ~C-%~.
+
+#+begin_src emacs-lisp
+(defun goto-matching-par (&optional arg)
+  "Go to the matching parenthesis character if one is adjacent to point."
+  (interactive "^p")
+  (cond ((looking-at "\\s(") (forward-sexp arg))
+        ((looking-back "\\s)" 1) (backward-sexp arg))
+        ;; Now, try to succeed from inside of a bracket
+        ((looking-at "\\s)") (forward-char) (backward-sexp arg))
+        ((looking-back "\\s(" 1) (backward-char) (forward-sexp arg))))
+
+(global-set-key (kbd "C-%") #'goto-matching-par)
 #+end_src
 
 * Packages and Modes
