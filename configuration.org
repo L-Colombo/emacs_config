@@ -38,10 +38,10 @@ This is to ensure that all packages are always up to date:
 (global-display-line-numbers-mode 1)
 (global-hl-line-mode 1)
 
-(setq display-line-numbers-type 'relative)
-(setq inhibit-startup-screen 't)
 (setq-default word-wrap t)
 (setq-default tab-width 4)
+(setq display-line-numbers-type 'relative)
+(setq inhibit-startup-screen 't)
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq ring-bell-function 'ignore)
@@ -214,8 +214,11 @@ The list of incompatible modes is set to empty beacuse of conflicts that may ari
 #+begin_src emacs-lisp
 (use-package pdf-tools
   :ensure t
-  :init (setq pdf-view-incompatible-modes '())
-  :config (pdf-tools-install))
+  :init
+  (setq pdf-view-incompatible-modes '())
+  :config
+  (add-hook 'pdf-view-mode-hook (lambda () (display-line-numbers-mode -1)))
+  (pdf-tools-install))
 #+end_src
 
 ** LaTeX
@@ -341,8 +344,9 @@ This takes care of installing and enabling ~company-mode~ globally.
 
 #+begin_src emacs-lisp
 (defun add-company-yasnippet ()
-	(setq company-backends '((company-capf :with company-yasnippet))))
-(add-hook 'eglot--managed-mode-hook #'add-company-yasnippet)
+	(setq company-backends '((company-capf :with company-yasnippet)
+							 (company-files :with company-yasnippet))))
+
 (add-hook 'lsp-managed-mode-hook #'add-company-yasnippet)
 #+end_src
 
